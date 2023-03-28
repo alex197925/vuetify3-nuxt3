@@ -13,7 +13,7 @@
             <v-card class="py-2 px-3">
               <v-text-field
                 placeholder="Search Product..."
-                v-model="name"
+                v-model="title"
               ></v-text-field>
               <v-radio-group v-model="sortBy">
                 <template v-slot:label>
@@ -51,7 +51,7 @@
             <v-row>
               <v-col
                 v-for="(product, i) in filteredProducts"
-                :key="product.id"
+                :key="i"
                 cols="12"
                 mg="4"
                 sm="6"
@@ -89,17 +89,17 @@ import data from "./data";
 
 const sortBy = ref("");
 const order = ref("asending");
-const name = ref("");
+const title = ref("");
 const products = ref(data);
 // console.log(data);
 
 const filteredProducts = computed(() => {
-  if (name.value) {
+  if (title.value) {
     return [...products.value].filter((item) => {
-      return name.value
+      return title.value
         .toLocaleLowerCase()
         .split(" ")
-        .every((w) => item.name.toLocaleLowerCase().includes(w));
+        .every((v) => item.title.toLocaleLowerCase().includes(v));
     });
   } else {
     return products.value;

@@ -1,42 +1,25 @@
-# Nuxt 3 Minimal Starter
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Filtering data with computed(title)
 
-## Setup
-
-Make sure to install the dependencies:
-
-```bash
-# yarn
-yarn install
-
-# npm
-npm install
-
-# pnpm
-pnpm install
-```
-
-## Development Server
-
-Start the development server on http://localhost:3000
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+````typescript
+<script setup>
+import data from "./data";
+const sortBy = ref("");
+const order = ref("asending");
+const title = ref("");
+const products = ref(data);
+// console.log(data);
+const filteredProducts = computed(() => {
+  if (title.value) {
+    return [...products.value].filter((item) => {
+      return title.value
+        .toLocaleLowerCase()
+        .split(" ")
+        .every((v) => item.title.toLocaleLowerCase().includes(v));
+    });
+  } else {
+    return products.value;
+  }
+});
+</script>
+`````

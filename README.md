@@ -23,3 +23,6 @@ const filteredProducts = computed(() => {
 });
 </script>
 `````
+
+
+Web site: https://filter-products-vue.netlify.app/

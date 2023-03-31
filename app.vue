@@ -65,7 +65,7 @@
                     class="padding-top"
                   ></v-img>
 
-                  <v-card-title> {{ product.title }}</v-card-title>
+                  <v-card-title> {{ product.name }}</v-card-title>
 
                   <v-card-subtitle> $ {{ product.price }}</v-card-subtitle>
 
@@ -89,21 +89,55 @@ import data from "./data";
 
 const sortBy = ref("");
 const order = ref("asending");
-const title = ref("");
+const name = ref("");
 const products = ref(data);
 // console.log(data);
 
+// ---- COMPUTED ------ Filtering product by title from data!
 const filteredProducts = computed(() => {
-  if (title.value) {
+  if (name.value) {
     return [...products.value].filter((item) => {
-      return title.value
+      return name.value
         .toLocaleLowerCase()
         .split(" ")
-        .every((v) => item.title.toLocaleLowerCase().includes(v));
+        .every((v) => item.name.toLocaleLowerCase().includes(v));
     });
   } else {
     return products.value;
   }
+});
+
+const dynamicSort = (property) => {
+  let sortOrder = 1;
+  if (property[0] === "-") {
+    sortOrder = -1;
+    property = property.substr(1);
+  }
+
+  return (a, b) => {
+    const result =
+      a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+    return result * sortOrder;
+  };
+};
+
+const sortProducts = () => {
+  if (order.value == "deasending") {
+    products.value.sort(dynamicSort("-" + sortBy.value));
+  } else {
+    products.value.sort(dynamicSort(sortBy.value));
+  }
+};
+
+// ----- Watching ------- Filtering by Boolean, on radio button
+watch(sortBy, () => {
+  sortProducts();
+  // console.log("Sorting By");
+});
+
+watch(order, () => {
+  sortProducts();
+  // console.log("Order By ");
 });
 </script>
 
